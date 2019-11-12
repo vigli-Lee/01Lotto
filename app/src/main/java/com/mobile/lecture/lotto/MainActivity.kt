@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity() {
 
     fun onDrawClick(v: View) {
         val lotto = makeLottoNumbers()
-        lottoNumbersTextView.text = Arrays.toString(lotto)
+        lottoNumbersTextView.text = lotto.joinToString(", ")
     }
 
-    private fun makeLottoNumbers(): IntArray {
+    private fun makeLottoNumbers(): List<Int> {
         val numbers = ArrayList<Int>()
 
         //로또 번호 생성
@@ -32,15 +32,9 @@ class MainActivity : AppCompatActivity() {
         //번호를 섞는다
         numbers.shuffle()
 
-        //앞의 6개의 값만 추출한다.
-        val lotto = IntArray(6)
-        for (i in 0..5) {
-            lotto[i] = numbers.get(i)
+        //앞의 6개의 값만 추출하고 순차 정렬한다.
+        return numbers.slice(IntRange(0, 5)).let {
+            it.sorted()
         }
-
-        //번호를 순차로 정렬한다.
-        Arrays.sort(lotto)
-
-        return lotto
     }
 }
