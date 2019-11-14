@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         numbers.shuffle()
 
         //앞의 6개의 값만 추출하고 순차 정렬한다.
-        return numbers.slice(IntRange(0, 5)).let {
-            it.sorted()
-        }
+        return numbers.slice(IntRange(0, 5)).sorted()
     }
 }
