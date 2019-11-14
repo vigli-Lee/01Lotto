@@ -4,24 +4,30 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.mobile.lecture.lotto.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var lottoNumbersTextView: TextView
+    private lateinit var binding: ActivityMainBinding
+    private var lotto = listOf(1,2,3,4,5,6)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
 
-        lottoNumbersTextView = findViewById(R.id.textView)
+    private fun displayLotto() {
+        binding.setLotto(lotto)
     }
 
     fun onDrawClick(v: View) {
-        val lotto = makeLottoNumbers()
-        lottoNumbersTextView.text = lotto.joinToString(", ")
+        makeLottoNumbers()
+
+        displayLotto()
     }
 
-    private fun makeLottoNumbers(): List<Int> {
+    private fun makeLottoNumbers() {
         val numbers = ArrayList<Int>()
 
         //로또 번호 생성
@@ -32,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         //번호를 섞는다
         numbers.shuffle()
 
-        //앞의 6개의 값만 추출하고 순차 정렬한다.
-        return numbers.slice(IntRange(0, 5)).sorted()
+        //앞의 6개의 값만 추출한다.
+        lotto = numbers.slice(IntRange(0, 5)).sorted()
     }
 }
