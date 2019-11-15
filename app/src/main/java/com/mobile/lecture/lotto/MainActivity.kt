@@ -3,6 +3,7 @@ package com.mobile.lecture.lotto
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
@@ -29,10 +30,17 @@ class MainActivity : AppCompatActivity() {
 
     fun onDrawClick(v: View) {
         if (lottoGenCount === lottoGenThreshold) {
-            Snackbar.make(binding.btDraw, "과도한 투자는 중독입니다.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("멈출께요") {
+            AlertDialog.Builder(this)
+                    .setTitle("경고")
+                    .setMessage("과도한 투자는 중독입니다.")
+                    .setPositiveButton("계속할래요") { _, _ ->
+                        makeLottoNumbers()
+                        displayLotto()
+                    }
+                    .setNegativeButton("멈출께요") { _, _ ->
                         finish()
                     }
+                    .create()
                     .show()
         } else {
             makeLottoNumbers()
