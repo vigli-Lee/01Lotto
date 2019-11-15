@@ -2,15 +2,19 @@ package com.mobile.lecture.lotto
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.snackbar.Snackbar
 import com.mobile.lecture.lotto.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var lotto = listOf(1,2,3,4,5,6)
+
+    private var lottoGenCount = 0
+    private var lottoGenThreshold = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,12 +23,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayLotto() {
         binding.setLotto(lotto)
+
+        Toast.makeText(this, "${++lottoGenCount}회 생성했습니다.", Toast.LENGTH_LONG).show()
     }
 
     fun onDrawClick(v: View) {
-        makeLottoNumbers()
-
-        displayLotto()
+        if (lottoGenCount === lottoGenThreshold) {
+            Snackbar.make(binding.btDraw, "과도한 투자는 중독입니다.", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("멈출께요") {
+                        finish()
+                    }
+                    .show()
+        } else {
+            makeLottoNumbers()
+            displayLotto()
+        }
     }
 
     private fun makeLottoNumbers() {
